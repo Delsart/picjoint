@@ -44,7 +44,7 @@ def fileTypeCheck(fn):
 def main(argv):
     try:
         opts, args = getopt.getopt(
-            argv, "d:o:f:q:w:h:m:", ['direction', "output", "fold", "quality", 'width', 'height', 'mode'])
+            argv, "d:o:f:q:w:h:m:", ['help', 'direction', "output", "fold", "quality", 'width', 'height', 'mode'])
     except getopt.GetoptError:
         print(message_help)
         sys.exit(2)
@@ -58,7 +58,10 @@ def main(argv):
     specifyed_height = 0
     specifyed_mode = 'RGBA'
     for opt, arg in opts:
-        if opt in ("-d", "--direction"):
+        if opt in ('--help'):
+            print(message_help)
+            sys.exit(2)
+        elif opt in ("-d", "--direction"):
             direction = arg
             if not direction in directions:
                 print(opt+message_error_dirction)
