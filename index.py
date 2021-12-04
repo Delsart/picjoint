@@ -9,7 +9,7 @@ m_name = 'picjoint'
 m_version = 'v0.01'
 
 directions = ['TB', 'BT', 'LR', 'RL']
-file_types = ['.jpeg', '.jpg', '.png', '.gif', '.webp']
+file_types = ['.jpeg', '.jpg', '.png', '.gif', '.webp','.apng']
 image_modes = ['1', 'L', 'P', 'RGB', 'RGBA', 'CMYK']
 
 message_help = '%s %s usage:' % (m_name, m_version)+'''
@@ -217,7 +217,7 @@ def joint(im_list, direction, quality, specifyed_width, specifyed_height, output
     if len(results) < 2:
         results[0].save(output_name+file_types[output_type])
     else:
-        results[0].save(output_name+file_types[output_type], save_all=True, loop=True,
+        results[0].save(output_name+file_types[output_type], save_all=True, loop=0,
                         append_images=results[1:], duration=max_frames/30)
 
 
