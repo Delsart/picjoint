@@ -218,7 +218,7 @@ def joint(im_list, direction, quality, specifyed_width, specifyed_height, output
         results[0].save(output_name+file_types[output_type])
     else:
         results[0].save(output_name+file_types[output_type], save_all=True, loop=True,
-                        append_images=results[1:], duration=max_frames/30, optimize=True, disposal=1)
+                        append_images=results[1:], duration=max_frames/30)
 
 
 if __name__ == "__main__":
