@@ -1,11 +1,9 @@
-from os import listdir, name
-from PIL import Image
-from PIL import ImageSequence
-
-import math
-import sys
 import getopt
+import math
 import os
+import sys
+
+from PIL import Image, ImageSequence
 
 m_name = 'picjoint'
 m_version = 'v0.01'
@@ -26,14 +24,15 @@ message_help = '%s %s usage:' % (m_name, m_version)+'''
 -w   --width          <output width>                                                                   [int]
 -h   --height         <output height>                                                                  [int]
 -m   --mode           <output mode default>    [string]['1', 'L', 'P', 'RGB', 'RGBA', 'CMYK'][default: RGBA]
+
 [file1, file2, ...]   <input files>                                                                 [string]
 '''
-
 message_error_dirction = " must be ['TB', 'BT', 'LR', 'RL']"
 message_error_mode = " must be ['1', 'L', 'P', 'RGB', 'RGBA', 'CMYK']"
 message_error_quality = "quality must in (0,1], the input is "
 
 
+# 检查文件类型
 def fileTypeCheck(fn):
     for i, itype in enumerate(file_types):
         if fn.endswith(itype):
@@ -96,10 +95,10 @@ def main(argv):
 def openImage(fold, paths):
 
     temp_l = [os.path.join(fold, fn)
-              for fn in listdir(fold)] if not fold == '' else[]
+              for fn in os.listdir(fold)] if not fold == '' else[]
     temp_l.extend([path for path in paths])
     if len(temp_l) < 1:
-        temp_l = [fn for fn in listdir()]
+        temp_l = [fn for fn in os.listdir()]
     f_l = []
     otype = 0
     for t in temp_l:
@@ -112,9 +111,10 @@ def openImage(fold, paths):
     return ([Image.open(fn) for fn in f_l], otype)
 
 
+# 拼接图片
 def joint(im_list, direction, quality, specifyed_width, specifyed_height, output_name, output_type, mode):
 
-    # 图片转化为相同的尺寸
+    # 计算尺寸
     max_width = 0
     max_height = 0
     input_total_width = 0
@@ -171,7 +171,7 @@ def joint(im_list, direction, quality, specifyed_width, specifyed_height, output
         max_frames = len(frames) if len(frames) > max_frames else max_frames
         ims.append({'frames': frames, 'size': (new_w, new_h)})
 
-   # 拼接图片
+    # 拼接图片
     new_w = math.floor(max_width) if handle_width else total_width
     new_h = math.floor(max_height)if not handle_width else total_height
     results = []
@@ -209,8 +209,8 @@ def joint(im_list, direction, quality, specifyed_width, specifyed_height, output
 
         results.append(result)
 
-    print('saving...')
     # 保存图片
+    print('saving...')
     if len(results) < 2:
         results[0].save(output_name+file_types[output_type])
     else:
